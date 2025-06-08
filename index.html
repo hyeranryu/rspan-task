@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>작업 기억력 실험</title>
+
+  <!-- jsPsych Core -->
+  <script src="jspsych/jspsych.js"></script>
+  <link href="jspsych/jspsych.css" rel="stylesheet">
+
+  <!-- Plugins -->
+  <script src="jspsych/plugin-html-button-response.js"></script>
+  <script src="jspsych/plugin-html-keyboard-response.js"></script>
+  <script src="jspsych/plugin-survey-html-form.js"></script>
+
+  <!-- 커스텀 스타일 -->
+  <style>
+    body {
+      font-family: 'Nanum Gothic', sans-serif;
+      background-color: #f0f8ff;
+      padding: 20px;
+    }
+    .jspsych-display-element {
+      max-width: 800px;
+      margin: auto;
+    }
+    button {
+      font-size: 18px;
+      margin: 5px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #recall-display span {
+      display: inline-block;
+      font-size: 24px;
+      margin: 0 4px;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 사용자 정의 js 코드 -->
+  <script src="main.js"></script>
+</body>
+</html>
