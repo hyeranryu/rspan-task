@@ -229,7 +229,7 @@ timeline.push({
   on_finish: () => {
     const data = jsPsych.data.get().json();
     console.log("전송할 데이터:", data); // 🔍 확인용
-    fetch("https://script.google.com/macros/s/AKfycby3M4ihKhtG_LXt0CB9I5RH-LrFgRuMYp_wtB4DgvQHS5Msp2THXfiAh6c2rguG8fd1/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbwH_V1i1oR9Jxlwn-LP2r-VBKtaegeDkj7O9nOFlfJ7GUbv1T2rjMLn3QsKLtDlL4MCpw/exec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
