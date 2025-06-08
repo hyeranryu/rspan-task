@@ -46,19 +46,7 @@ const main_trials = [
 ];
 
 const jsPsych = initJsPsych({
-  on_finish: () => {
-  const data = jsPsych.data.get().json();
-  console.log("전송할 데이터:", data); // 🔍 콘솔 확인용
-  fetch("https://sheetdb.io/api/v1/ly0c2x4a6f4mi", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ data: JSON.parse(data) })
-  });
-}
 
-});
 
 let timeline = [];
 let recall_letters = [];
@@ -234,10 +222,22 @@ addTrialsFromBlocks(main_blocks, 'main');
 // 실험 종료 화면
 timeline.push({
   type: jsPsychHtmlButtonResponse,
-  stimulus: '<h2 style="text-align: center; color: green;">🎉 실험이 끝났습니다. 참여해 주셔서 감사합니다!</h2>',
-  choices: [],
-  response_ends_trial: false
+  stimulus: "<h2 style='text-align:center; color: green;'>🎉 실험이 끝났습니다.<br>참여해 주셔서 감사합니다!</h2><p style='text-align:center;'>아래 버튼을 눌러 제출을 완료하세요.</p>",
+  choices: ['✅ 제출 완료'],
+  on_finish: () => {
+    const data = jsPsych.data.get().json();
+    console.log("전송할 데이터:", data); // 🔍 확인용
+    fetch("https://sheetdb.io/api/v1/ly0c2x4a6f4mi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ data: JSON.parse(data) })
+    });
+  }
 });
+
+
 
 
 jsPsych.run(timeline);
