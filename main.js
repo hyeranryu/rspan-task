@@ -45,6 +45,8 @@ const main_trials = [
   { sentence: "설탕은 자신이 이렇게 좋은 거래를 제공받는 것을 믿을 수 없었다.", plausible: false, letter: "ㄷ" }
 ];
 
+
+
 const jsPsych = initJsPsych();
 
 
@@ -227,12 +229,12 @@ timeline.push({
   on_finish: () => {
     const data = jsPsych.data.get().json();
     console.log("전송할 데이터:", data); // 🔍 확인용
-    fetch("https://sheetdb.io/api/v1/ly0c2x4a6f4mi", {
+    fetch("https://script.google.com/macros/s/AKfycby3M4ihKhtG_LXt0CB9I5RH-LrFgRuMYp_wtB4DgvQHS5Msp2THXfiAh6c2rguG8fd1/exec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ data: JSON.parse(data) })
+      body: data // 이미 JSON string이므로 다시 parse 필요 없음
     });
   }
 });
