@@ -132,31 +132,53 @@ for (let set = 0; set < 3; set++) {
 
 // 버튼 생성 recall 화면
 function getRecallTrial(n, correct_letters) {
+  let local_letters = []; // ✅ 이 블록 안에서만 쓰는 배열
+
   return {
     type: jsPsychHtmlButtonResponse,
     stimulus: function () {
       let html = `<p>기억난 자음을 순서대로 누르세요.</p><div id='recall-display' data-max='${n}'></div>`;
-      ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ', '모름'].forEach(l => {
-        html += `<button onclick='addLetter("${l}")'>${l}</button>`;
+      ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ','모름'].forEach(l => {
+        html += `<button onclick='window._addLetter("${l}")'>${l}</button>`;
       });
-      html += `<button onclick='removeLetter()'>지우기</button>`;
+      html += `<button onclick='window._removeLetter()'>지우기</button>`;
       return html;
     },
     choices: ['제출'],
-    on_finish: (data) => {
-      const recalled_str = recall_letters.join('');
+    on_start: function () {
+      local_letters = []; // ✅ 새 trial 시작 시 무조건 비움
+
+      window._addLetter = function (l) {
+        const d = document.getElementById('recall-display');
+        if (d.children.length < parseInt(d.dataset.max)) {
+          const box = document.createElement('span');
+          box.textContent = l;
+          d.appendChild(box);
+          local_letters.push(l);
+        }
+      };
+
+      window._removeLetter = function () {
+        const d = document.getElementById('recall-display');
+        if (d.lastChild) {
+          d.removeChild(d.lastChild);
+          local_letters.pop();
+        }
+      };
+    },
+    on_finish: function (data) {
+      const recalled_str = local_letters.join('');
       const correct_str = correct_letters.join('');
-      const acc = recalled_str === correct_str ? 1 : 0;
 
       data.trial_type = 'recall';
       data.recalled = recalled_str;
       data.correct = correct_str;
-      data.accuracy = acc;
+      data.accuracy = recalled_str === correct_str ? 1 : 0;
       data.recall_rt = data.rt;
-      recall_letters = [];
     }
   };
 }
+
 
 // add/removeLetter 함수 전역 정의
 window.addLetter = l => {
@@ -180,9 +202,6 @@ window.removeLetter = () => {
 function addTrialsFromBlocks(blocks, phase) {
   blocks.forEach(block => {
     const correct_letters_block = [];
-
-    recall_letters = []; // ✅ 각 블록 시작 시마다 초기화
-    
     block.forEach(trial => {
       timeline.push({
         type: jsPsychHtmlButtonResponse,
