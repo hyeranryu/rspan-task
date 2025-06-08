@@ -180,6 +180,9 @@ window.removeLetter = () => {
 function addTrialsFromBlocks(blocks, phase) {
   blocks.forEach(block => {
     const correct_letters_block = [];
+
+    recall_letters = []; // ✅ 각 블록 시작 시마다 초기화
+    
     block.forEach(trial => {
       timeline.push({
         type: jsPsychHtmlButtonResponse,
