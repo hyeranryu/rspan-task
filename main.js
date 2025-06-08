@@ -195,6 +195,7 @@ function addTrialsFromBlocks(blocks, phase) {
           data.correct_response = data.correct;
           const correctIndex = data.correct === '예(자연스러움)' ? 0 : 1;
           data.accuracy = data.response == correctIndex ? 1 : 0;
+          data.rt = data.rt;  // 반응 시간 저장
         }
       });
       timeline.push({
@@ -235,12 +236,13 @@ timeline.push({
       trial_type: trial.trial_type || '',
       sentence: trial.stimulus?.replace(/<[^>]*>?/gm, '') || '',
       plausible: trial.correct || '',
-      response: trial.response || '',
-      accuracy: trial.accuracy || '',
-      letter: trial.letter || '',
-      recalled: trial.recalled || '',
-      correct: trial.correct || '',
-      recall_rt: trial.recall_rt || ''
+      response: trial.response ?? '',
+      accuracy: trial.accuracy ?? '',
+      rt: trial.rt ?? '',
+      letter: trial.letter ?? '',
+      recalled: trial.recalled ?? '',
+      correct: trial.correct ?? '',
+      recall_rt: trial.recall_rt ?? ''
     }));
 
     try {
