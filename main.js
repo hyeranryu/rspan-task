@@ -45,7 +45,7 @@ const main_trials = [
   { sentence: "설탕은 자신이 이렇게 좋은 거래를 제공받는 것을 믿을 수 없었다.", plausible: false, letter: "ㄷ" }
 ];
 
-const jsPsych = initJsPsych({
+const jsPsych = initJsPsych();
 
 
 let timeline = [];
