@@ -221,21 +221,40 @@ timeline.push({
 });
 addTrialsFromBlocks(main_blocks, 'main');
 
-// 실험 종료 화면
 timeline.push({
   type: jsPsychHtmlButtonResponse,
   stimulus: "<h2 style='text-align:center; color: green;'>🎉 실험이 끝났습니다.<br>참여해 주셔서 감사합니다!</h2><p style='text-align:center;'>아래 버튼을 눌러 제출을 완료하세요.</p>",
   choices: ['✅ 제출 완료'],
-  on_finish: () => {
-    const data = jsPsych.data.get().json();
-    console.log("전송할 데이터:", data); // 🔍 확인용
-    fetch("https://script.google.com/macros/s/AKfycbwH_V1i1oR9Jxlwn-LP2r-VBKtaegeDkj7O9nOFlfJ7GUbv1T2rjMLn3QsKLtDlL4MCpw/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: data // 이미 JSON string이므로 다시 parse 필요 없음
-    });
+  on_finish: async () => {
+    const allData = jsPsych.data.get().values();
+    const formattedData = allData.map(trial => ({
+      name: trial.name || '',
+      class: trial.class || '',
+      number: trial.number || '',
+      phase: trial.phase || '',
+      trial_type: trial.trial_type || '',
+      sentence: trial.stimulus?.replace(/<[^>]*>?/gm, '') || '',
+      plausible: trial.correct || '',
+      response: trial.response || '',
+      accuracy: trial.accuracy || '',
+      letter: trial.letter || '',
+      recalled: trial.recalled || '',
+      correct: trial.correct || '',
+      recall_rt: trial.recall_rt || ''
+    }));
+
+    try {
+      await fetch("https://sheetdb.io/api/v1/agwdlifh2ffko", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ data: formattedData })
+      });
+      alert("제출 완료! 감사합니다.");
+    } catch (e) {
+      alert("제출 중 오류 발생: " + e.message);
+    }
   }
 });
 
