@@ -51,7 +51,6 @@ const jsPsych = initJsPsych();
 
 
 let timeline = [];
-let recall_letters = [];
 
 // 참가자 정보 입력 화면
 timeline.push({
@@ -180,24 +179,6 @@ function getRecallTrial(n, correct_letters) {
 }
 
 
-// add/removeLetter 함수 전역 정의
-window.addLetter = l => {
-  const d = document.getElementById('recall-display');
-  if (d.children.length < parseInt(d.dataset.max)) {
-    const box = document.createElement('span');
-    box.textContent = l;
-    d.appendChild(box);
-    recall_letters.push(l);
-  }
-};
-
-window.removeLetter = () => {
-  const d = document.getElementById('recall-display');
-  if (d.lastChild) {
-    d.removeChild(d.lastChild);
-    recall_letters.pop();
-  }
-};
 
 function addTrialsFromBlocks(blocks, phase) {
   blocks.forEach(block => {
@@ -227,7 +208,6 @@ function addTrialsFromBlocks(blocks, phase) {
         trial_duration: 1000,
         data: { phase, trial_type: 'letter', letter: trial.letter },
         on_finish: () => {
-          recall_letters.push(trial.letter);
           correct_letters_block.push(trial.letter);
         }
       });
